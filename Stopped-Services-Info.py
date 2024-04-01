@@ -99,7 +99,7 @@ while True:
 
             message.attach(MIMEText(body, 'html'))
 
-            with open('/home/farooq/Downloads/lion.png', 'rb') as fp:
+            with open('/home/.lion.png', 'rb') as fp:
                 img_data = fp.read()
             img = MIMEImage(img_data)
             img.add_header('Content-ID', '<lion>')
