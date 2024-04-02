@@ -9,9 +9,10 @@ import socket
 # Configuration data as a multi-line string
 config_data = """
 [SERVICES]
-services = ztn, logstash
+services = auditd
 """
-# Add services Names here  
+# Ex: services = auditd, docker, rsyslog, firewall
+#############********Add services Names here******#############  
 
 # Load configuration from the multi-line string
 config = configparser.ConfigParser()
@@ -181,4 +182,3 @@ if __name__ == '__main__':
                 print(f"Resource usage for {service}: {resource_usage}")
             monitor.check_service_status()  # Check service status
         time.sleep(1)  # Sleep for 1 second before checking again
-
