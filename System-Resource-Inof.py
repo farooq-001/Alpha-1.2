@@ -108,14 +108,14 @@ while True:
 
         with open('/home/.lion.png', 'rb') as fp:
             img_data = fp.read()
-        img = MIMEImage(img_data)
+        img = MIMEImage(img_data, _subtype='png')
         img.add_header('Content-ID', '<lion>')
         message.attach(img)
 
         with smtplib.SMTP(smtp_server, 587) as server:
             server.starttls()
             server.login(sender_email, password)
+
             server.sendmail(sender_email, receiver_email, message.as_string())
 
     time.sleep(60)
-
