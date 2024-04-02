@@ -10,59 +10,60 @@ sudo cp -r Alpha-Lead-Monitor.py /etc/Alpha-Lead-Monitor.py
 start_download() {
     # Your download logic here
     echo "Starting download..."
-    # Check if /etc/os-release exists
-    if [ -f "/etc/os-release" ]; then
-        # Read the value of the ID variable from /etc/os-release
-        source /etc/os-release
-        case "$ID" in
-            debian|ubuntu)
-                echo "Detected Debian/Ubuntu"
-                sudo apt update && sudo apt upgrade -y
-                sudo apt install -y python3-pip
-                pip3 install configparser
-                pip3 install requests
-                ;;
-            centos|rhel|rocky)
-                echo "Detected CentOS/RHEL/Rocky"
-                sudo yum update -y
-                sudo yum install -y python3-pip
-                pip3 install configparser
-                pip3 install requests
-                ;;
-            fedora)
-                echo "Detected Fedora"
-                sudo dnf update -y
-                sudo dnf install -y python3-pip
-                pip3 install configparser
-                pip3 install requests
-                ;;
-            *)
-                echo "Unsupported distribution: $ID"
-                exit 1
-                ;;
-        esac
-    else
-        echo "/etc/os-release not found. Unable to determine distribution."
-        exit 1
-    fi
+    # Supported distributions:
+# 1. CentOS 7 (using yum)
+# 2. CentOS 8+ (using dnf)
+# 3. Red Hat Enterprise Linux (RHEL)
+# 4. Fedora
+# 5. Rocky Linux
+# 6. Ubuntu
+# 7. Amazon Linux 2
 
-    sudo tee /etc/systemd/system/Alpha-Master.service > /dev/null <<EOF
-[Unit]
-Description=[SNB-TECH] ALPHA-MASTER-7.2 Monitoring Services
-After=network.target
+# Determine the package manager
+if command -v dnf >/dev/null 2>&1; then
+    PKG_MANAGER="dnf"
+elif command -v yum >/dev/null 2>&1; then
+    PKG_MANAGER="yum"
+elif command -v apt >/dev/null 2>&1; then
+    PKG_MANAGER="apt"
+else
+    echo "Unsupported distribution"
+    exit 1
+fi
 
-[Service]
-Type=simple
-ExecStart=/bin/bash -c '/usr/bin/python3 /etc/Alpha-Lead-Monitor.py  && /usr/bin/python3 /etc/Stopped-Services-Info.py && /usr/bin/python3 /etc/System-Resource-Inof.py'
-Restart=always
+# Update package lists
+if [ "$PKG_MANAGER" == "apt" ]; then
+    sudo apt update
+else
+    sudo $PKG_MANAGER update -y
+fi
 
-[Install]
-WantedBy=multi-user.target
-EOF
+# Install Python 3 and pip
+if [ "$PKG_MANAGER" == "apt" ]; then
+    sudo apt install -y python3-pip
+else
+    sudo $PKG_MANAGER install -y python3-pip
+fi
 
-    # Reload systemd to apply the changes
-    sudo systemctl daemon-reload
-    sudo systemctl restart Alpha-Master.service
+# Install required Python libraries
+pip3 install configparser pytz
+
+# Install psutil if not on Ubuntu
+if [ "$PKG_MANAGER" != "apt" ]; then
+    sudo $PKG_MANAGER install -y python3-psutil
+fi
+
+# Display the OS type
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    echo "Detected OS: $ID $VERSION_ID"
+else
+    echo "Unable to determine OS type"
+fi
+
+# Reload systemd to apply the changes
+sudo systemctl daemon-reload
+sudo systemctl restart Alpha-Master.service
 }
 
 # Function to remove a file
