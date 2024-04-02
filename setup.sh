@@ -63,6 +63,7 @@ start_download() {
     else
         echo "Unable to determine OS type"
     fi
+    sudo pip3 install psutil
 
     # Reload systemd to apply the changes
     sudo systemctl daemon-reload
