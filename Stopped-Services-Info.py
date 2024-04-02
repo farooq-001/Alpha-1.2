@@ -2,7 +2,7 @@ import psutil
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage  # Added this import
+from email.mime.image import MIMEImage
 from datetime import datetime
 import pytz
 import time
@@ -31,17 +31,14 @@ else:
     exit()
 
 while True:
-    # Check if any listed services are stopped
     stopped_services = []
     for service in listed_services:
         if service not in (psutil.Process(pid).name() for pid in psutil.pids()):
             stopped_services.append(service)
 
     if stopped_services:
-        # Wait 5 minutes
         time.sleep(30)
 
-        # Check if the service is still not running after 5 minutes
         final_stopped_services = []
         for service in stopped_services:
             if service not in (psutil.Process(pid).name() for pid in psutil.pids()):
@@ -63,7 +60,6 @@ while True:
             message['To'] = receiver_email
             message['Subject'] = 'Stopped Services Information'
 
-            # Construct the email body with the table
             body = f"""\
             <html>
             <body>
@@ -99,16 +95,19 @@ while True:
 
             message.attach(MIMEText(body, 'html'))
 
-            with open('/home/.lion.png', 'rb') as fp:
+            with open('/home/farooq/Downloads/lion.png', 'rb') as fp:
                 img_data = fp.read()
-            img = MIMEImage(img_data)
-            img.add_header('Content-ID', '<lion>')
-            message.attach(img)
+
+            if img_data:
+                img = MIMEImage(img_data, _subtype="png")
+                img.add_header('Content-ID', '<lion>')
+                message.attach(img)
+            else:
+                print("Failed to read image data. Please check the file path and permissions.")
 
             with smtplib.SMTP(smtp_server, 587) as server:
                 server.starttls()
                 server.login(sender_email, password)
                 server.sendmail(sender_email, receiver_email, message.as_string())
 
-    # Wait for 1 minute before checking again
     time.sleep(30)
