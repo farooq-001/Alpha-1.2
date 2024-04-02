@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# Copy the python code files
-sudo cp -r .loin.png  /home/.lion.png
-sudo cp -r Stopped-Services-Info.py /etc/Stopped-Services-Info.py
-sudo cp -r System-Resource-Inof.py /etc/System-Resource-Inof.py
-sudo cp -r Alpha-Lead-Monitor.py /etc/Alpha-Lead-Monitor.py
+# Copy the files
+sudo cp -r  Alpha-Master.service       /etc/systemd/system/
+sudo cp -r  Stopped-Services-Info.py   /etc/
+sudo cp -r  System-Resource-Inof.py    /etc/
+sudo cp -r  Alpha-Lead-Monitor.py      /etc/
+sudo cp -r .loin.png                   /home/.lion.png
+
 
 # Function to start the download
 start_download() {
