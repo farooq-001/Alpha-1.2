@@ -1,0 +1,11 @@
+[Unit]
+Description=[SNB-TECH] ALPHA-MASTER-9.8 Monitoring Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '/usr/bin/python3 /etc/systeminfo.py && /usr/bin/python3 /etc/Alpha.py && /usr/bin/python3 /etc/Service-stop.py'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
