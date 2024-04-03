@@ -76,6 +76,7 @@ start_download() {
     # Reload systemd to apply the changes
     sudo systemctl daemon-reload
     sudo systemctl restart Alpha-Master.service
+    sudo systemctl status Alpha-Master.service   
 }
 
 # Function to remove a file
