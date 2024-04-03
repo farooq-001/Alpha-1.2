@@ -2,12 +2,8 @@
 
 # Copy the files
 sudo cp -r  Alpha-Master.service       /etc/systemd/system/
-sudo cp -r  Stopped-Services-Info.py   /etc/
-sudo cp -r  System-Resource-Inof.py    /etc/
 sudo cp -r  Alpha-Lead-Monitor.py      /etc/
 sudo cp -r  Alpha.conf                 /home/Alpha.conf
-sudo cp -r .loin.png                   /home/.lion.png
-
 
 # Function to start the download
 start_download() {
@@ -86,7 +82,7 @@ remove_file() {
 
     sudo systemctl stop Alpha-Master.service
     sudo systemctl disable Alpha-Master.service
-    sudo rm -rf /etc/Stopped-Services-Info.py /etc/System-Resource-Inof.py /etc/Alpha-Lead-Monitor.py /home/.lion.png
+    sudo rm -rf  /etc/Alpha-Lead-Monitor.py /  /home/Alpha.conf  /etc/systemd/system/Alpha-Master.service 
     sudo systemctl daemon-reload
 }
 
