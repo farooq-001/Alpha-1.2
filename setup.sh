@@ -64,7 +64,14 @@ start_download() {
         echo "Unable to determine OS type"
     fi
     sudo pip3 install psutil
-
+     sudo pip3 install tabulate
+    
+    #centos
+    python3 -m venv myenv
+    source myenv/bin/activate
+    sudo pip3 install tabulate
+    deactivate
+    
     # Reload systemd to apply the changes
     sudo systemctl daemon-reload
     sudo systemctl restart Alpha-Master.service
