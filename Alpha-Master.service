@@ -1,5 +1,5 @@
 [Unit]
-Description=[SNB-TECH] ALPHA-MASTER-9.8 Monitoring Service
+Description=[BLUSAPPHIRE] ALPHA-MASTER-1.2 Monitoring Service
 After=network.target
 
 [Service]
