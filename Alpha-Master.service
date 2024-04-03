@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c '/usr/bin/python3 /etc/Alpha-Lead-Monitor.py  && /usr/bin/python3 /etc/Stopped-Services-Info.py  && /usr/bin/python3 /etc/System-Resource-Inof.py'
+ExecStart=/bin/bash -c '/usr/bin/python3 /etc/Stopped-Services-Info.py  && /usr/bin/python3 /etc/System-Resource-Inof.py'
 Restart=always
 
 [Install]
