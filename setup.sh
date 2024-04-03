@@ -5,6 +5,7 @@ sudo cp -r  Alpha-Master.service       /etc/systemd/system/
 sudo cp -r  Stopped-Services-Info.py   /etc/
 sudo cp -r  System-Resource-Inof.py    /etc/
 sudo cp -r  Alpha-Lead-Monitor.py      /etc/
+sudo cp -r  Alpha.conf                 /home/Alpha.conf
 sudo cp -r .loin.png                   /home/.lion.png
 
 
